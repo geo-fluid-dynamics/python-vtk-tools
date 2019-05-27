@@ -87,11 +87,11 @@ def plot_scalar_field_contours(
     
     if colorbar:
     
-        return axes, plt.colorbar(mappable = mappable, ax = axes)
+        return axes, plt.colorbar(mappable = mappable, ax = axes), mappable
     
     else:
     
-        return axes
+        return axes, mappable
         
         
 def plot_scalar_field(vtk_data, scalar_solution_component = 0, axes = None):

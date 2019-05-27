@@ -30,7 +30,7 @@ def test__plot_scalar_field_contours(datadir):
     
     for filled in (False, True):
     
-        axes, colorbar = vtk_tools.io.plot_scalar_field_contours(
+        axes, colorbar, _ = vtk_tools.io.plot_scalar_field_contours(
             vtk_data = data,
             scalar_solution_component = 2,
             filled = filled,
@@ -56,7 +56,7 @@ def test__plot_scalar_field(datadir):
     data = vtk_tools.io.read_vtk_data(
         vtk_filepath = str(datadir.join(vtk_filename)))
         
-    axes, colorbar = vtk_tools.io.plot_scalar_field(
+    axes, colorbar, _ = vtk_tools.io.plot_scalar_field(
         vtk_data = data,
         scalar_solution_component = 2)
     
@@ -111,7 +111,7 @@ def test__plot_superposed_scalar_and_vector_fields(datadir):
     data = vtk_tools.io.read_vtk_data(
         vtk_filepath = str(datadir.join(vtk_filename)))
         
-    axes, colorbar = vtk_tools.io.plot_scalar_field(
+    axes, colorbar, _ = vtk_tools.io.plot_scalar_field(
         vtk_data = data,
         scalar_solution_component = 2)
         
@@ -146,7 +146,7 @@ def test__plot_unsteady_superposed_scalar_and_vector_fields(datadir):
         data = vtk_tools.io.read_vtk_data(
             vtk_filepath = str(datadir.join(vtk_dir + vtu_filename)))
             
-        axes, colorbar = vtk_tools.io.plot_scalar_field(
+        axes, colorbar, _ = vtk_tools.io.plot_scalar_field(
             vtk_data = data,
             scalar_solution_component = 2)
             
