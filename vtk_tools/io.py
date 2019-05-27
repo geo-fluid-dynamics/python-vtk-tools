@@ -1,8 +1,8 @@
 import numpy
-import scipy.interpolate
-from matplotlib import pyplot as plt
 import vtk
 from vtk.util.numpy_support import vtk_to_numpy
+import scipy.interpolate
+from matplotlib import pyplot as plt
 
 
 def read_vtk_data(vtk_filepath):

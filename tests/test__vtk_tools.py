@@ -1,18 +1,19 @@
 import xml.etree.ElementTree
-import sapphire.postprocessing.vtk
-import sapphire.test
+import vtk_tools
+import vtk_tools.io
+import vtk_tools.test
 
 
-datadir = sapphire.test.datadir
+datadir = vtk_tools.test.datadir
 
 vtk_filename = "freeze_water/solution_4.vtu"
 
 def test__plot_mesh(datadir):
     
-    data = sapphire.postprocessing.vtk.read_vtk_data(
+    data = vtk_tools.io.read_vtk_data(
         vtk_filepath = str(datadir.join(vtk_filename)))
     
-    axes = sapphire.postprocessing.vtk.plot_mesh(vtk_data = data)
+    axes = vtk_tools.io.plot_mesh(vtk_data = data)
     
     outpath = datadir.join("mesh.png")
     
@@ -23,13 +24,13 @@ def test__plot_mesh(datadir):
     
 def test__plot_scalar_field_contours(datadir):
     
-    data = sapphire.postprocessing.vtk.read_vtk_data(
+    data = vtk_tools.io.read_vtk_data(
         vtk_filepath = str(datadir.join(vtk_filename)))
     
     
     for filled in (False, True):
     
-        axes, colorbar = sapphire.postprocessing.vtk.plot_scalar_field_contours(
+        axes, colorbar = vtk_tools.io.plot_scalar_field_contours(
             vtk_data = data,
             scalar_solution_component = 2,
             filled = filled,
@@ -52,10 +53,10 @@ def test__plot_scalar_field_contours(datadir):
     
 def test__plot_scalar_field(datadir):
     
-    data = sapphire.postprocessing.vtk.read_vtk_data(
+    data = vtk_tools.io.read_vtk_data(
         vtk_filepath = str(datadir.join(vtk_filename)))
         
-    axes, colorbar = sapphire.postprocessing.vtk.plot_scalar_field(
+    axes, colorbar = vtk_tools.io.plot_scalar_field(
         vtk_data = data,
         scalar_solution_component = 2)
     
@@ -70,10 +71,10 @@ def test__plot_scalar_field(datadir):
     
 def test__plot_vector_field(datadir):
     
-    data = sapphire.postprocessing.vtk.read_vtk_data(
+    data = vtk_tools.io.read_vtk_data(
         vtk_filepath = str(datadir.join(vtk_filename)))
         
-    axes = sapphire.postprocessing.vtk.plot_vector_field(
+    axes = vtk_tools.io.plot_vector_field(
         vtk_data = data,
         vector_solution_component = 1,
         headwidth = 5)
@@ -87,10 +88,10 @@ def test__plot_vector_field(datadir):
     
 def test__plot_streamlines(datadir):
     
-    data = sapphire.postprocessing.vtk.read_vtk_data(
+    data = vtk_tools.io.read_vtk_data(
         vtk_filepath = str(datadir.join(vtk_filename)))
         
-    axes, _ = sapphire.postprocessing.vtk.plot_streamlines(
+    axes, _ = vtk_tools.io.plot_streamlines(
         vtk_data = data,
         vector_solution_component = 1)
     
@@ -107,16 +108,16 @@ def test__plot_streamlines(datadir):
     
 def test__plot_superposed_scalar_and_vector_fields(datadir):
 
-    data = sapphire.postprocessing.vtk.read_vtk_data(
+    data = vtk_tools.io.read_vtk_data(
         vtk_filepath = str(datadir.join(vtk_filename)))
         
-    axes, colorbar = sapphire.postprocessing.vtk.plot_scalar_field(
+    axes, colorbar = vtk_tools.io.plot_scalar_field(
         vtk_data = data,
         scalar_solution_component = 2)
         
     colorbar.ax.set_title("$T$")
     
-    axes = sapphire.postprocessing.vtk.plot_vector_field(
+    axes = vtk_tools.io.plot_vector_field(
         vtk_data = data,
         vector_solution_component = 1,
         axes = axes,
@@ -142,16 +143,16 @@ def test__plot_unsteady_superposed_scalar_and_vector_fields(datadir):
             (element.attrib["timestep"], element.attrib["file"]) 
             for element in etree[0]]:
     
-        data = sapphire.postprocessing.vtk.read_vtk_data(
+        data = vtk_tools.io.read_vtk_data(
             vtk_filepath = str(datadir.join(vtk_dir + vtu_filename)))
             
-        axes, colorbar = sapphire.postprocessing.vtk.plot_scalar_field(
+        axes, colorbar = vtk_tools.io.plot_scalar_field(
             vtk_data = data,
             scalar_solution_component = 2)
             
         colorbar.ax.set_title("$T$")
         
-        axes = sapphire.postprocessing.vtk.plot_vector_field(
+        axes = vtk_tools.io.plot_vector_field(
             vtk_data = data,
             vector_solution_component = 1,
             axes = axes,
