@@ -187,7 +187,7 @@ def test__plot_unsteady_superposed_scalar_field_and_streamlines(datadir):
             vmax = 1.,
             colorbar_kwargs = {
                 "boundaries": (0., 1.),
-                "ticks": (0., 0.2, 0.4, 0.6, 0.8, 1.)})
+                "ticks": (-1., -0.5, 0., 0.5, 1.)})
             
         colorbar.ax.set_title("$T$")
         
