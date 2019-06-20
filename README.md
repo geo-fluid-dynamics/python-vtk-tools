@@ -11,7 +11,9 @@ The cold wall temperature is dropped well below the freezing temperature, initia
 
 ![Freezing water in a cavity](https://github.com/geo-fluid-dynamics/python-vtk-tools/blob/master/docs/images/WaterFreezing.gif?raw=true)
 
-The streamline thickness is proportional to the velocity. This is convenient for visualizing flow within the liquid part of phase-changing domains, where the velocity in the solid region is nearly zero.
+The black streamline thickness is proportional to the velocity. 
+This is convenient for visualizing flow within the liquid part of phase-changing domains, where the velocity in the solid region is nearly zero. 
+A white contour line was added to mark the freezing temperature contour, separating the liquid and solid regions.
 
 Our code writes the PNG images at each time step using the same approach as in the `test__plot_unsteady_superposed_scalar_field_and_streamlines` test,
 though this is a higher resolution version of the water freezing test data.
