@@ -167,3 +167,53 @@ def test__plot_unsteady_superposed_scalar_and_vector_fields(datadir):
         
         axes.get_figure().savefig(str(outpath))
         
+        
+def test__plot_unsteady_superposed_scalar_field_and_streamlines(datadir):
+    
+    etree = xml.etree.ElementTree.parse(
+        str(datadir.join(pvd_filepath))).getroot()
+    
+    for time, vtu_filename in [
+            (element.attrib["timestep"], element.attrib["file"]) 
+            for element in etree[0]]:
+    
+        data = vtk_tools.io.read_vtk_data(
+            vtk_filepath = str(datadir.join(vtk_dir + vtu_filename)))
+            
+        axes, colorbar, _ = vtk_tools.io.plot_scalar_field(
+            vtk_data = data,
+            scalar_solution_component = 2,
+            vmin = -1.,
+            vmax = 1.,
+            colorbar_kwargs = {
+                "boundaries": (0., 1.),
+                "ticks": (0., 0.2, 0.4, 0.6, 0.8, 1.)})
+            
+        colorbar.ax.set_title("$T$")
+        
+        axes, _ = vtk_tools.io.plot_streamlines(
+            vtk_data = data,
+            vector_solution_component = 1,
+            axes = axes,
+            color = "k")
+            
+        axes, _ = vtk_tools.io.plot_scalar_field_contours(
+            vtk_data = data,
+            scalar_solution_component = 2,
+            colorbar = False,
+            axes = axes,
+            levels = (0.,),
+            colors = "w")
+            
+        axes.set_xlim((0., 1.))
+    
+        axes.set_ylim((0., 1.))
+        
+        axes.set_title("$t = {0}$".format(time))
+        
+        outpath = datadir + "/temperature_and_velocity__t{}.png".format(time)
+        
+        print("Saving {0}".format(outpath))
+        
+        axes.get_figure().savefig(outpath)
+        
