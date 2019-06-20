@@ -53,6 +53,7 @@ def plot_scalar_field_contours(
         scalar_solution_component = 0,
         filled = False,
         colorbar = True,
+        colorbar_kwargs = {},
         axes = None,
         **kwargs):
     """ Plot contours of a scalar field """
@@ -87,21 +88,24 @@ def plot_scalar_field_contours(
     
     if colorbar:
     
-        return axes, plt.colorbar(mappable = mappable, ax = axes), mappable
+        cb = plt.colorbar(mappable = mappable, ax = axes, **colorbar_kwargs)
+        
+        return axes, cb, mappable
     
     else:
     
         return axes, mappable
         
         
-def plot_scalar_field(vtk_data, scalar_solution_component = 0, axes = None):
+def plot_scalar_field(vtk_data, scalar_solution_component = 0, axes = None, **kwargs):
     """ Plot a scalar field """
     return plot_scalar_field_contours(
         vtk_data = vtk_data,
         scalar_solution_component = scalar_solution_component,
         filled = True,
         axes = axes,
-        levels = 128)
+        levels = 128,
+        **kwargs)
         
         
 def plot_vector_field(vtk_data, vector_solution_component = 0, axes = None,
