@@ -91,7 +91,7 @@ def test__plot_streamlines(datadir):
     data = vtk_tools.io.read_vtk_data(
         vtk_filepath = str(datadir.join(vtk_filename)))
         
-    axes, _ = vtk_tools.io.plot_streamlines(
+    axes, _, _ = vtk_tools.io.plot_streamlines(
         vtk_data = data,
         vector_solution_component = 1)
     
@@ -191,7 +191,7 @@ def test__plot_unsteady_superposed_scalar_field_and_streamlines(datadir):
             
         colorbar.ax.set_title("$T$")
         
-        axes, _ = vtk_tools.io.plot_streamlines(
+        axes, _, _ = vtk_tools.io.plot_streamlines(
             vtk_data = data,
             vector_solution_component = 1,
             axes = axes,
@@ -215,5 +215,5 @@ def test__plot_unsteady_superposed_scalar_field_and_streamlines(datadir):
         
         print("Saving {0}".format(outpath))
         
-        axes.get_figure().savefig(outpath)
+        axes.get_figure().savefig(str(outpath))
         

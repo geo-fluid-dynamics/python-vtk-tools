@@ -175,8 +175,10 @@ def plot_streamlines(vtk_data, vector_solution_component = 0, axes = None,
         
     speed_grid = numpy.sqrt(u_grid**2 + v_grid**2)
         
+    maxspeed = speed_grid.max()
+    
     stream = axes.streamplot(x_unique, y_unique, u_grid, v_grid,
-        linewidth = max_linewidth*speed_grid/speed_grid.max(),
+        linewidth = max_linewidth*speed_grid/maxspeed,
         arrowsize = 1.e-8,
         **kwargs)
     
@@ -186,5 +188,5 @@ def plot_streamlines(vtk_data, vector_solution_component = 0, axes = None,
     
     axes.set_ylabel("$y$")
     
-    return axes, stream
+    return axes, stream, maxspeed
     
