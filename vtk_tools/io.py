@@ -150,7 +150,10 @@ def format_data_for_streamplot(x, y, u, v):
     return x_unique, y_unique, u_grid, v_grid
     
     
-def plot_streamlines(vtk_data, vector_solution_component = 0, axes = None,
+def plot_streamlines(
+        vtk_data,
+        vector_solution_component = 0,
+        axes = None,
         max_linewidth = 3.,
         **kwargs):
     """ Plot streamlines of a vector field """
@@ -179,7 +182,6 @@ def plot_streamlines(vtk_data, vector_solution_component = 0, axes = None,
     
     stream = axes.streamplot(x_unique, y_unique, u_grid, v_grid,
         linewidth = max_linewidth*speed_grid/maxspeed,
-        arrowsize = 1.e-8,
         **kwargs)
     
     axes.set_aspect("equal")
