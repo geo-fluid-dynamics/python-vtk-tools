@@ -1,4 +1,6 @@
 import xml.etree.ElementTree
+import matplotlib
+matplotlib.use('Agg')  # Only use back-end to prevent displaying image
 import vtk_tools
 import vtk_tools.io
 import vtk_tools.test
