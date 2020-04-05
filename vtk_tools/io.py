@@ -29,8 +29,37 @@ def get_connectivity(vtk_data):
         .reshape(cell_data.size//4, 3)
         
     return connectivity
-    
 
+
+def interpolate_scalar_onto_rectangular_structured_grid(
+        vtk_data,
+        scalar_solution_component = 0,
+        resample = False):
+
+    point_data = vtk_to_numpy(vtk_data.GetPoints().GetData())
+    
+    x = point_data[:,0]
+    
+    y = point_data[:,1]
+    
+    if resample:
+    
+        xgrid, ygrid = numpy.meshgrid(
+            numpy.linspace(numpy.min(x), numpy.max(x), resample),
+            numpy.linspace(numpy.min(y), numpy.max(y), resample))
+        
+    else:
+    
+        xgrid, ygrid = numpy.meshgrid(numpy.unique(x), numpy.unique(y))
+        
+    u = vtk_to_numpy(vtk_data.GetPointData().GetArray(
+        scalar_solution_component))
+    
+    ugrid = scipy.interpolate.griddata((x, y), u, (xgrid, ygrid))
+    
+    return xgrid, ygrid, ugrid
+    
+    
 def plot_mesh(vtk_data, axes = None):
     """ Plot the mesh """
     connectivity = get_connectivity(vtk_data)
@@ -55,6 +84,8 @@ def plot_scalar_field_contours(
         colorbar = True,
         colorbar_kwargs = {},
         axes = None,
+        scale = None,
+        blank_edgecolors = False,
         **kwargs):
     """ Plot contours of a scalar field """
     point_data = vtk_to_numpy(vtk_data.GetPoints().GetData())
@@ -65,6 +96,10 @@ def plot_scalar_field_contours(
     
     u = vtk_to_numpy(vtk_data.GetPointData().GetArray(
         scalar_solution_component))
+    
+    if scale:
+    
+        u = scale(u)
     
     if axes is None:
     
@@ -80,6 +115,12 @@ def plot_scalar_field_contours(
     
         mappable = axes.tricontour(*args, **kwargs)
     
+    if blank_edgecolors:
+    
+        for collection in mappable.collections:
+        
+            collection.set_edgecolor("face")
+            
     axes.set_aspect("equal")
     
     axes.set_xlabel("$x$")
@@ -97,17 +138,17 @@ def plot_scalar_field_contours(
         return axes, mappable
         
         
-def plot_scalar_field(vtk_data, scalar_solution_component = 0, axes = None, **kwargs):
+def plot_scalar_field(vtk_data, scalar_solution_component = 0, axes = None, levels = 128, **kwargs):
     """ Plot a scalar field """
     return plot_scalar_field_contours(
         vtk_data = vtk_data,
         scalar_solution_component = scalar_solution_component,
         filled = True,
         axes = axes,
-        levels = 128,
+        levels = levels,
         **kwargs)
-        
-        
+
+
 def plot_vector_field(vtk_data, vector_solution_component = 0, axes = None,
         **kwargs):
     """ Plot a vector field """
@@ -155,6 +196,7 @@ def plot_streamlines(
         vector_solution_component = 0,
         axes = None,
         max_linewidth = 3.,
+        speedscale = None,
         **kwargs):
     """ Plot streamlines of a vector field """
     points = vtk_to_numpy(vtk_data.GetPoints().GetData())[:,:2]
@@ -180,8 +222,12 @@ def plot_streamlines(
         
     maxspeed = speed_grid.max()
     
+    if speedscale is None:
+    
+        speedscale = maxspeed
+    
     stream = axes.streamplot(x_unique, y_unique, u_grid, v_grid,
-        linewidth = max_linewidth*speed_grid/maxspeed,
+        linewidth = max_linewidth*speed_grid/speedscale,
         **kwargs)
     
     axes.set_aspect("equal")
